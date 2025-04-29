@@ -1,0 +1,12 @@
+# Ignore __pycache__ folders
+__pycache__/
+
+# Ignore virtual environment folder
+.venv/
+
+# Ignore VS Code folder
+.vscode/
+
+# Ignore database and related files
+db/
+chroma.sqlite3
