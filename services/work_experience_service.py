@@ -1,6 +1,6 @@
 from utils.text_preprocessing import clean_text, get_embeddings
-from db.collections.work_experience_desc_collection import WorkExperienceDescCollection
-from db.collections.work_experience_title_collection import WorkExperienceTitleCollection
+from data.collections.work_experience_desc_collection import WorkExperienceDescCollection
+from data.collections.work_experience_title_collection import WorkExperienceTitleCollection
 from schemas.work_experience import WorkExperience
 from sentence_transformers import SentenceTransformer
 
