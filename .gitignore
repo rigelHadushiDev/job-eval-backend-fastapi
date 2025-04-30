@@ -10,3 +10,8 @@ __pycache__/
 # Ignore database and related files
 db/
 chroma.sqlite3
+
+Dockerfile
+docker-compose.yml
+*.dockerfile
+*.env
