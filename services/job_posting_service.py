@@ -18,7 +18,6 @@ class JobPostingService:
         self.title_collection.add(
             job_posting_id=job_posting.jobPostingId,
             job_title=job_posting.jobPostingTitle,
-            required_education_level=job_posting.requiredEducationLevel,
             required_english_level=job_posting.requiredEnglishLevel,
             required_experience_years=job_posting.requiredExperienceYears,
             required_skills=job_posting.requiredSkills,
@@ -27,7 +26,6 @@ class JobPostingService:
         self.desc_collection.add(
             job_posting_id=job_posting.jobPostingId,
             job_description=job_posting.jobPostingDesc,
-            required_education_level=job_posting.requiredEducationLevel,
             required_english_level=job_posting.requiredEnglishLevel,
             required_experience_years=job_posting.requiredExperienceYears,
             required_skills=job_posting.requiredSkills,
@@ -37,7 +35,6 @@ class JobPostingService:
             jobPostingId=job_posting.jobPostingId,
             jobPostingTitle=job_posting.jobPostingTitle,
             jobPostingDesc=job_posting.jobPostingDesc,
-            requiredEducationLevel=job_posting.requiredEducationLevel,
             requiredEnglishLevel=job_posting.requiredEnglishLevel,
             requiredExperienceYears=job_posting.requiredExperienceYears,
             requiredSkills=job_posting.requiredSkills,
@@ -64,7 +61,6 @@ class JobPostingService:
         return {
             "job_posting_id": job_posting_id,
             "job_description": desc_result["documents"][0],
-            "required_education_level": metadata.get("required_education_level"),
             "required_english_level": metadata.get("required_english_level"),
             "required_experience_years": metadata.get("required_experience_years"),
             "required_skills": metadata.get("required_skills"),
@@ -81,7 +77,6 @@ class JobPostingService:
         self.title_collection.update(
             job_posting_id=job_posting_id,
             job_title=job_posting.jobPostingTitle,
-            required_education_level=job_posting.requiredEducationLevel,
             required_english_level=job_posting.requiredEnglishLevel,
             required_experience_years=job_posting.requiredExperienceYears,
             required_skills=job_posting.requiredSkills,
@@ -90,7 +85,6 @@ class JobPostingService:
         self.desc_collection.update(
             job_posting_id=job_posting_id,
             job_description=job_posting.jobPostingDesc,
-            required_education_level=job_posting.requiredEducationLevel,
             required_english_level=job_posting.requiredEnglishLevel,
             required_experience_years=job_posting.requiredExperienceYears,
             required_skills=job_posting.requiredSkills,
@@ -101,7 +95,6 @@ class JobPostingService:
             jobPostingId=job_posting.jobPostingId,
             jobPostingTitle=job_posting.jobPostingTitle,
             jobPostingDesc=job_posting.jobPostingDesc,
-            requiredEducationLevel=job_posting.requiredEducationLevel,
             requiredEnglishLevel=job_posting.requiredEnglishLevel,
             requiredExperienceYears=job_posting.requiredExperienceYears,
             requiredSkills=job_posting.requiredSkills,

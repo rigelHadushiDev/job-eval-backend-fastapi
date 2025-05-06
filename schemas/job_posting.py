@@ -5,7 +5,6 @@ class JobPosting(BaseModel):
     jobPostingId: str
     jobPostingTitle: str
     jobPostingDesc: str
-    requiredEducationLevel: str
     requiredEnglishLevel: str
     requiredExperienceYears: int
     requiredSkills: str

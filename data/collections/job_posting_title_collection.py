@@ -7,7 +7,6 @@ class JobPostingTitleCollection:
         self,
         job_posting_id: str,
         job_title: str,
-        required_education_level: str,
         required_english_level: str,
         required_experience_years: float,
         required_skills: str,
@@ -17,7 +16,6 @@ class JobPostingTitleCollection:
             documents=[job_title],
             metadatas=[{
                 "job_posting_id": job_posting_id,
-                "required_education_level": required_education_level,
                 "required_english_level": required_english_level,
                 "required_experience_years": required_experience_years,
                 "required_skills": required_skills
@@ -33,7 +31,6 @@ class JobPostingTitleCollection:
         self,
         job_posting_id: str,
         job_title: str,
-        required_education_level: str,
         required_english_level: str,
         required_experience_years: float,
         required_skills: str,
@@ -43,7 +40,6 @@ class JobPostingTitleCollection:
         self.add(
             job_posting_id,
             job_title,
-            required_education_level,
             required_english_level,
             required_experience_years,
             required_skills,

@@ -29,7 +29,10 @@ class WorkExperienceDescCollection:
         return result
 
     def get_all_by_user(self, user_id: int):
-        return collection.get(where={"user_id": user_id})
+        return collection.get(
+            where={"user_id": user_id},
+            include=["embeddings", "metadatas", "documents"]
+        )
 
     def get(self, ids: list[str], include: list[str] = None):
         return collection.get(ids=ids, include=include)
