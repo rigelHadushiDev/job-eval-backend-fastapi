@@ -11,7 +11,5 @@ async def create_job_posting(
     payload: ApplicantRequest,
     scoring_service: ScoringService = Depends(get_scoring_service)
 ):
-    print("Received request payload:", payload.model_dump_json(indent=2))
     result = scoring_service.calculate_final_score(payload)
-    print("Response Data:", result.model_dump_json(indent=2))
     return result

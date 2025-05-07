@@ -1,7 +1,7 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 import numpy as np
 import math
-from schemas.applicant_request import ApplicantRequest
+from schemas.applicant_request import ApplicantRequest, EducationLevelEntry, SkillEntry
 from constants.scoring_weights import EDUCATION_LEVEL_SCORES, ENGLISH_LEVEL_SCORES
 from schemas.generate_score_response import GenerateScoreResponse
 
@@ -21,18 +21,20 @@ class ScoringService:
 
         self.work_experience_years: float = 0.0
 
-    def calculate_education_score(self, education_levels: List) -> float:
+    def calculate_education_score(self, education_levels: Optional[List[EducationLevelEntry]]) -> float:
         if not education_levels:
-            return 0.0
-
+            return 0.0  
+        
         highest_score = max(
-            (EDUCATION_LEVEL_SCORES.get(entry.educationLevel.upper(), 0)
-             for entry in education_levels),
+            (EDUCATION_LEVEL_SCORES.get(entry.educationLevel.upper(), 0) 
+             for entry in education_levels if entry.educationLevel),
             default=0.0
         )
         return highest_score
-
-    def calculate_english_score(self, english_level: str) -> float:
+    
+    def calculate_english_score(self, english_level: Optional[str]) -> float:
+        if not english_level:  
+            return 0.0  
         return ENGLISH_LEVEL_SCORES.get(english_level.upper(), 0.0)
 
     @staticmethod
@@ -45,13 +47,18 @@ class ScoringService:
 
     @staticmethod
     def experience_score(candidate_exp: float, required_exp: float, steepness: float = 1.0) -> float:
+        if candidate_exp == 0.0:
+            return 0.0
+
         if candidate_exp >= required_exp:
             return 1.0
+        
         x = candidate_exp - required_exp
         score = 1 / (1 + math.exp(-steepness * x))
-        return min(2 * score, 1.0)
+        return min(2 * score, 1.0) 
 
-    def compute_work_experience_similarity(self, work_titles, work_descs,job_title_vec,job_desc_vec ) -> float:
+
+    def compute_work_experience_similarity(self, work_titles, work_descs, job_title_vec, job_desc_vec) -> float:
         total_similarity = 0.0
         total_years = 0.0
         count = 0
@@ -68,7 +75,11 @@ class ScoringService:
             total_years += experience_years
             count += 1
 
-        average_similarity = round(total_similarity / count, 4) if count > 0 else 0.0
+        if count == 0:
+            self.work_experience_years = 0.0
+            return 0.0 
+
+        average_similarity = round(total_similarity / count, 4)
         self.work_experience_years = round(total_years, 2)
 
         return average_similarity
@@ -96,12 +107,11 @@ class ScoringService:
         return len(intersection) / len(union) if union else 0.0
 
     @staticmethod
-    def skill_score(user_skills: list, job_skills_str: str) -> float:
-        if not user_skills or not job_skills_str:
-            return 0.0
-
+    def skill_score(user_skills: Optional[List[SkillEntry]], job_skills_str: str) -> float:
+        if not user_skills or not job_skills_str:  # Handle missing skills
+            return 0.0  # Return 0 if no skills are provided
+        
         job_skills = [skill.strip().lower() for skill in job_skills_str.split(",") if skill.strip()]
-
         skill_proficiency = {name.strip().lower(): prof / 5 for name, prof in user_skills}
         user_skill_names = set(skill_proficiency.keys())
 
@@ -134,8 +144,8 @@ class ScoringService:
         education_score = self.calculate_education_score(applicant.educationLevel)
         english_score = self.calculate_english_score(applicant.englishLevel)
 
-        user_skills = [(entry.skillName, entry.skillProficiency) for entry in applicant.skills]
-        skill_score = self.skill_score(user_skills, job_skills_str)
+        user_skills = [(entry.skillName, entry.skillProficiency) for entry in applicant.skills] if applicant.skills else []
+        skill_score = self.skill_score(user_skills, job_skills_str="")  
 
         final_score = round((
             0.40 * similarity_score +

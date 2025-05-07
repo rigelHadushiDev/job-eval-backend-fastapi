@@ -1,8 +1,8 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 class EducationLevelEntry(BaseModel):
-    educationLevel: str
+    educationLevel: Optional[str] = None 
 
 class SkillEntry(BaseModel):
     skillName: str
@@ -11,7 +11,7 @@ class SkillEntry(BaseModel):
 class ApplicantRequest(BaseModel):
     userId: int
     username: str
-    educationLevel: List[EducationLevelEntry]
-    englishLevel: str
-    skills: List[SkillEntry]
+    educationLevel: Optional[List[EducationLevelEntry]] = None  
+    englishLevel: Optional[str] = None  
+    skills: Optional[List[SkillEntry]] = None 
     jobPostingId: int
