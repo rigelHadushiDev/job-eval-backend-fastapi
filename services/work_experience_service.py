@@ -1,9 +1,7 @@
-# services/work_experience_service.py
-
 from schemas.work_experience_stored import StoredWorkExperience
 from schemas.work_experience import WorkExperience
 from utils.text_preprocessing import clean_text, get_embeddings
-
+from fastapi import HTTPException, status
 class WorkExperienceService:
     def __init__(self, model, desc_collection, title_collection):
         self.model = model
@@ -50,11 +48,14 @@ class WorkExperienceService:
         desc_result = self.desc_collection.get(ids=[work_experience_id], include=["metadatas", "embeddings", "documents"])
 
         if not desc_result or not desc_result.get("ids"):
-            raise RuntimeError(f"No work experience found for ID: {work_experience_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No work experience found for ID: {work_experience_id}"
+            )
 
         metadata = desc_result["metadatas"][0]
         embedding = desc_result["embeddings"][0]
-        document = desc_result["documents"][0]  # ← Get the actual description here
+        document = desc_result["documents"][0]  
 
         return {
             "work_experience_id": work_experience_id,

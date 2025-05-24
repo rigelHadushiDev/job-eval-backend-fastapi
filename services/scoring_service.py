@@ -108,8 +108,8 @@ class ScoringService:
 
     @staticmethod
     def skill_score(user_skills: Optional[List[SkillEntry]], job_skills_str: str) -> float:
-        if not user_skills or not job_skills_str:  # Handle missing skills
-            return 0.0  # Return 0 if no skills are provided
+        if not user_skills or not job_skills_str:  
+            return 0.0  
         
         job_skills = [skill.strip().lower() for skill in job_skills_str.split(",") if skill.strip()]
         skill_proficiency = {name.strip().lower(): prof / 5 for name, prof in user_skills}

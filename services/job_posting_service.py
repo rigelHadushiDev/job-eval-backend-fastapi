@@ -1,6 +1,7 @@
 from schemas.job_posting import JobPosting
 from schemas.job_posting_stored import StoredJobPosting
 from utils.text_preprocessing import clean_text, get_embeddings
+from fastapi import HTTPException, status
 
 class JobPostingService:
     def __init__(self, model, desc_collection, title_collection):
@@ -43,6 +44,7 @@ class JobPostingService:
         )
 
     def delete_job_posting(self, job_posting_id: str):
+        self.get_job_posting_by_id(job_posting_id)
         self.title_collection.delete(job_posting_id)
         self.desc_collection.delete(job_posting_id)
 
@@ -53,7 +55,10 @@ class JobPostingService:
         )
 
         if not desc_result or not desc_result.get("ids"):
-            raise RuntimeError(f"No job posting found for ID: {job_posting_id}")
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"No job posting found for ID: {job_posting_id}"
+            )
 
         metadata = desc_result["metadatas"][0]
         embedding = desc_result["embeddings"][0]
@@ -68,6 +73,9 @@ class JobPostingService:
         }
 
     def edit_job_posting(self, job_posting_id: str, job_posting: JobPosting) -> StoredJobPosting:
+
+        self.get_job_posting_by_id(job_posting_id)
+
         cleaned_title = clean_text(job_posting.jobPostingTitle)
         cleaned_description = clean_text(job_posting.jobPostingDesc)
         title_vector, desc_vector = get_embeddings(self.model, [cleaned_title], [cleaned_description])
