@@ -6,7 +6,15 @@ from services.scoring_service import ScoringService
 
 router = APIRouter()
 
-@router.post("/job-application/", tags=["Job Posting"], response_model=GenerateScoreResponse)
+@router.post(
+    "/job-application/",
+    tags=["Job Application Scoring"],
+    summary="Calculate Candidate Suitability Score",
+    description="""
+Calculates a candidate's suitability score for a job posting based on work experience similarity, years of experience, education, skills, and English proficiency.
+""",
+    response_model=GenerateScoreResponse
+)
 async def create_job_posting(
     payload: ApplicantRequest,
     scoring_service: ScoringService = Depends(get_scoring_service)

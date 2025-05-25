@@ -5,8 +5,20 @@ from api.routes.job_application_route import router as job_application_router
 from core.middleware import JWTAuthenticationMiddleware
 
 app = FastAPI(
-    title="Job Application Evaluation - FastAPI BE with ChromaDB",
-    version="1.0.0"
+    title="CodePioneers Career Portal Microservice",
+    description=(
+        "This microservice is responsible for computing a candidate’s overall suitability "
+        "score by comparing embeddings and applying smart data science algorithms."
+    ),
+    version="1.0.0",
+    contact={
+        "name": "Rigel Hadushi",
+        "url": "https://github.com/rigelHadushiDev",
+        "email": "rigelhadushi4@gmail.com"
+    },
+    docs_url="/docs",       
+    redoc_url="/redoc",  
+    openapi_url="/openapi.json"  
 )
 
 app.add_middleware(JWTAuthenticationMiddleware)
