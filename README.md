@@ -34,7 +34,7 @@ The service computes several sub-scores and combines them into a final suitabili
 
 #### Generating & Saving Embeddings for Work Experience
 
-![Work Experience Embedding](./assets/Generate_and \_Store_Work_Experience_Embeddings_Flowchart.png)
+![Work Experience Embedding](./assets/Generate_and_Store_Work_Experience_Embeddings_Flowchart.png)
 
 #### Generating & Saving Embeddings for Job Posting
 
