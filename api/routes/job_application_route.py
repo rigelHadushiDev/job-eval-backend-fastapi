@@ -15,7 +15,7 @@ Calculates a candidate's suitability score for a job posting based on work exper
 """,
     response_model=GenerateScoreResponse
 )
-async def create_job_posting(
+async def calculate_score(
     payload: ApplicantRequest,
     scoring_service: ScoringService = Depends(get_scoring_service)
 ):

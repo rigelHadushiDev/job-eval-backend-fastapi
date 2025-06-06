@@ -108,11 +108,13 @@ class ScoringService:
 
     @staticmethod
     def skill_score(user_skills: Optional[List[SkillEntry]], job_skills_str: str) -> float:
-        if not user_skills or not job_skills_str:  
-            return 0.0  
-        
+        if not user_skills or not job_skills_str:
+            return 0.0
+
         job_skills = [skill.strip().lower() for skill in job_skills_str.split(",") if skill.strip()]
+
         skill_proficiency = {name.strip().lower(): prof / 5 for name, prof in user_skills}
+
         user_skill_names = set(skill_proficiency.keys())
 
         matched = user_skill_names & set(job_skills)
@@ -121,9 +123,13 @@ class ScoringService:
             return 0.0
 
         avg_proficiency = sum(skill_proficiency[skill] for skill in matched) / len(matched)
+
         coverage = ScoringService.skill_coverage(user_skill_names, job_skills)
 
-        return round(coverage * avg_proficiency, 4)
+        final_score = round(coverage * avg_proficiency, 4)
+
+        return final_score
+
 
     def calculate_final_score(self, applicant: ApplicantRequest) -> float:
         user_id = applicant.userId
@@ -145,7 +151,7 @@ class ScoringService:
         english_score = self.calculate_english_score(applicant.englishLevel)
 
         user_skills = [(entry.skillName, entry.skillProficiency) for entry in applicant.skills] if applicant.skills else []
-        skill_score = self.skill_score(user_skills, job_skills_str="")  
+        skill_score = self.skill_score(user_skills, job_skills_str)  
 
         final_score = round((
             0.40 * similarity_score +
